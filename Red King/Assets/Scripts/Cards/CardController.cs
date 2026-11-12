@@ -21,7 +21,7 @@ namespace Cards
             
         }
 
-        public void OnMouseDown()
+        void OnMouseDown()
         {
             handController.PlayCard(cardData);
         }

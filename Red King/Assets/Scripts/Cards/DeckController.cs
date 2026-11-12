@@ -8,10 +8,12 @@ namespace Cards
 {
     public class DeckController : MonoBehaviour
     {
+        [Header("Deck")]
         [SerializeField] private List<CardData> deck = new();
         [SerializeField] private int seed;
         [SerializeField] private bool useRandomSeed = true;
         [SerializeField] private bool isShuffled;
+        public bool canDraw = true;
 
         [Header("Hands")]
         [SerializeField] private GameObject cardPrefab;
@@ -24,9 +26,6 @@ namespace Cards
         private void Start()
         {
             if (isShuffled) ShuffleDeck();
-
-            DealToHand(playerHand, handSize);
-            DealToHand(botHand, handSize);
         }
 
         private void Update()
@@ -49,7 +48,7 @@ namespace Cards
             Debug.Log("Deck has been shuffled and populated.");
         }
 
-        public List<CardData> DealHand(int count)
+        private List<CardData> DealHand(int count)
         {
             var hand = new List<CardData>();
 
@@ -69,7 +68,7 @@ namespace Cards
             return hand;
         }
 
-        private void DealToHand(Transform handParent, int count)
+        public void DealToHand(Transform handParent, int count)
         {
             var cards = DealHand(count);
             Debug.Log(cards.Count);
@@ -93,6 +92,20 @@ namespace Cards
 
                 go.GetComponent<CardView>().Setup(cards[i], cardBack);
             }
+        }
+
+        void OnMouseDown()
+        {
+            if (canDraw) DrawCard(playerHand);
+        }
+
+        private void DrawCard(Transform handParent, bool isBot = false)
+        {
+            var drawnCard = deck[^1];
+            deck.RemoveAt(deck.Count - 1);
+
+            Debug.Log("Drew the " + drawnCard.rank + " of " + drawnCard.suit);
+            canDraw = false;
         }
     }
 }
