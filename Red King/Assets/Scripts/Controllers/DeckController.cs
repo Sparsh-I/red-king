@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.XR;
 using Random = System.Random;
 
 namespace Cards
@@ -23,14 +24,12 @@ namespace Cards
         [SerializeField] private int handSize = 4;
         [SerializeField] private float cardSpacing = 1.2f;
 
+        private DisplayCardController dcController;
+
         private void Start()
         {
             if (isShuffled) ShuffleDeck();
-        }
-
-        private void Update()
-        {
-            
+            dcController = FindAnyObjectByType<DisplayCardController>();
         }
 
         public void ShuffleDeck()
@@ -104,7 +103,11 @@ namespace Cards
             var drawnCard = deck[^1];
             deck.RemoveAt(deck.Count - 1);
 
+            var hand = handParent.GetComponent<HandController>();
+            hand.HighlightHand(true);
+
             Debug.Log("Drew the " + drawnCard.rank + " of " + drawnCard.suit);
+            dcController.DisplayCard(drawnCard);
             canDraw = false;
         }
     }

@@ -15,15 +15,9 @@ namespace Cards
             handController = GetComponentInParent<HandController>();
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-            
-        }
-
         void OnMouseDown()
         {
-            handController.PlayCard(cardData);
+            if (!handController.isBot) handController.PlayCard(cardData);
         }
     }
 }

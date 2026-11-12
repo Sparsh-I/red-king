@@ -4,8 +4,9 @@ using UnityEngine.XR;
 
 public class HandController : MonoBehaviour
 {
-    [Header("Deck")]
+    [Header("Controllers")]
     [SerializeField] private DeckController deckController;
+    private DisplayCardController dcController;
 
     [Header("Player State")]
     public bool currentlyPlaying = false;
@@ -22,6 +23,7 @@ public class HandController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        dcController = FindAnyObjectByType<DisplayCardController>();
         deckController = FindAnyObjectByType<DeckController>();
         var hand = GetComponent<Transform>();
         deckController.DealToHand(hand, maxHandCapacity);
@@ -39,5 +41,12 @@ public class HandController : MonoBehaviour
     public void PlayCard(CardData card)
     {
         Debug.Log("Played the " + card.rank + " of " + card.suit);
+        dcController.DisplayCard(card);
+    }
+
+    public void HighlightHand(bool on)
+    {
+        foreach (var outline in GetComponentsInChildren<CardOutline>())
+            outline.SetOutline(on);
     }
 }
