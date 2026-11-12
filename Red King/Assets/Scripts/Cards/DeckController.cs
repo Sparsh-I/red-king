@@ -82,6 +82,15 @@ namespace Cards
                 var x = (i - (cards.Count - 1) / 2f) * cardSpacing;
                 go.transform.localPosition = new Vector3(x, 0f, 0f);
 
+                var controller = go.GetComponent<CardController>();
+                if (!controller)
+                {
+                    Debug.LogError("Card prefab has no CardController on it.", cardPrefab);
+                    continue;
+                }
+
+                controller.cardData = cards[i];
+
                 go.GetComponent<CardView>().Setup(cards[i], cardBack);
             }
         }

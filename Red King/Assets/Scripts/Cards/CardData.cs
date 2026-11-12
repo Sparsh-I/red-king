@@ -5,8 +5,8 @@ namespace Cards {
     public class CardData : ScriptableObject
     {
         [Header("Card Value")]
-        [SerializeField] public int rank;
-        [SerializeField] public CardSuit suit;
-        [SerializeField] public Sprite cardSprite;
+        public int rank;
+        public CardSuit suit;
+        public Sprite cardSprite;
     }
 }

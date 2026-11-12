@@ -6,18 +6,24 @@ namespace Cards
 {
     public class CardController : MonoBehaviour
     {
-        [SerializeField] private CardData cardData;
+        public CardData cardData;
+        private HandController handController;
         
         // Start is called before the first frame update
         void Start()
         {
-            
+            handController = GetComponentInParent<HandController>();
         }
 
         // Update is called once per frame
         void Update()
         {
             
+        }
+
+        public void OnMouseDown()
+        {
+            handController.PlayCard(cardData);
         }
     }
 }
