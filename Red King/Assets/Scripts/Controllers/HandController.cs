@@ -1,12 +1,16 @@
 using Cards;
+using NUnit.Framework.Constraints;
 using UnityEngine;
 using UnityEngine.XR;
 
+[RequireComponent(typeof(Transform))]
 public class HandController : MonoBehaviour
 {
     [Header("Controllers")]
     [SerializeField] private DeckController deckController;
     private DisplayCardController dcController;
+
+    private PlayedCardSpawner pcSpawner;
 
     [Header("Player State")]
     public bool currentlyPlaying = false;
@@ -23,10 +27,14 @@ public class HandController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        dcController = FindAnyObjectByType<DisplayCardController>();
-        deckController = FindAnyObjectByType<DeckController>();
         var hand = GetComponent<Transform>();
+        
+        dcController = FindAnyObjectByType<DisplayCardController>();
+        
+        deckController = FindAnyObjectByType<DeckController>();
         deckController.DealToHand(hand, maxHandCapacity);
+
+        pcSpawner = FindAnyObjectByType<PlayedCardSpawner>();
     }
 
     // Update is called once per frame
@@ -41,7 +49,17 @@ public class HandController : MonoBehaviour
     public void PlayCard(CardData card)
     {
         Debug.Log("Played the " + card.rank + " of " + card.suit);
-        dcController.DisplayCard(card);
+        pcSpawner.SpawnCard(card);
+        // dcController.DisplayCard(card);
+
+        foreach (Transform child in transform)
+        {
+            var controller = child.GetComponent<CardController>();
+            if (controller != null && controller.cardData == card) {
+                Destroy(child.gameObject);
+                break;
+            }
+        }
     }
 
     public void HighlightHand(bool on)

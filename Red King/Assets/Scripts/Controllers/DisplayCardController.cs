@@ -1,10 +1,11 @@
 using Cards;
 using UnityEngine;
 
+[RequireComponent(typeof(Renderer), typeof(SpriteRenderer))]
 public class DisplayCardController : MonoBehaviour
 {
     private SpriteRenderer sr;
-    [SerializeField] private int maxScale;
+    [SerializeField] private float maxScale;
     [SerializeField] private float growthRate = 0.1f;
     public bool isDisplaying = false;
 
@@ -28,14 +29,6 @@ public class DisplayCardController : MonoBehaviour
                 transform.localScale, target, growthRate * Time.deltaTime);
         }
         else transform.localScale = Vector3.one;
-
-        // if (isDisplaying) {
-        //     if (transform.localScale.x <= maxScale)
-        //         transform.localScale += new Vector3(transform.localScale.x + growthRate, 
-        //                                             transform.localScale.y + growthRate, 
-        //                                             transform.localScale.z + growthRate);
-        // }
-        // else transform.localScale = Vector3.one;
     }
 
     public void DisplayCard(CardData card)
