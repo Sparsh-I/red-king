@@ -7,7 +7,7 @@ namespace Cards
     {
         public CardData Data { get; private set; }
         [SerializeField] private Transform card;
-        [SerializeField] private Vector3 hoverScale;
+        [SerializeField] private Vector3 hoverScale = new(0.15f, 0.15f, 0.15f);
 
         public void Setup(CardData data, Sprite cardBack)
         {
