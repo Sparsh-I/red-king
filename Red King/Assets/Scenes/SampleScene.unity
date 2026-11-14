@@ -359,8 +359,8 @@ GameObject:
   - component: {fileID: 539584637}
   - component: {fileID: 539584636}
   - component: {fileID: 539584638}
-  - component: {fileID: 539584639}
   - component: {fileID: 539584640}
+  - component: {fileID: 539584639}
   m_Layer: 0
   m_Name: Played Pile
   m_TagString: Untagged
@@ -515,7 +515,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   playerHand: {fileID: 1234543274}
-  deck: {fileID: 1040653478}
+  displayCard: {fileID: 0}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -732,11 +732,6 @@ MonoBehaviour:
   maxScale: 2.7
   growthRate: 100
   isDisplaying: 0
---- !u!1 &1040653478 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3283904203835713853, guid: 595a9b1a3803a402284fdb686d60a6bd, type: 3}
-  m_PrefabInstance: {fileID: 8817927584161099403}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1234543274 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2894946940413410129, guid: 5fbd55d2a9d254fba92f4a0f05e06cd6, type: 3}
@@ -925,9 +920,9 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 619394802}
+  - {fileID: 175730626}
   - {fileID: 8817927584161099403}
+  - {fileID: 6283208710995675731}
   - {fileID: 539584637}
   - {fileID: 5076993291734300955}
-  - {fileID: 6283208710995675731}
   - {fileID: 856854699}
-  - {fileID: 175730626}
