@@ -6,10 +6,7 @@ using UnityEngine.XR;
 [RequireComponent(typeof(Transform))]
 public class HandController : MonoBehaviour
 {
-    [Header("Controllers")]
-    [SerializeField] private DeckController deckController;
     private DisplayCardController dcController;
-
     private PlayedCardSpawner pcSpawner;
 
     [Header("Player State")]
@@ -28,12 +25,8 @@ public class HandController : MonoBehaviour
     void Start()
     {
         var hand = GetComponent<Transform>();
-        
         dcController = FindAnyObjectByType<DisplayCardController>();
-        
-        deckController = FindAnyObjectByType<DeckController>();
-        deckController.DealToHand(hand, maxHandCapacity);
-
+        DeckController.Instance.DealToHand(hand, maxHandCapacity);
         pcSpawner = FindAnyObjectByType<PlayedCardSpawner>();
     }
 
@@ -48,9 +41,7 @@ public class HandController : MonoBehaviour
 
     public void PlayCard(CardData card)
     {
-        Debug.Log("Played the " + card.rank + " of " + card.suit);
         pcSpawner.SpawnCard(card);
-        // dcController.DisplayCard(card);
 
         foreach (Transform child in transform)
         {
@@ -59,6 +50,22 @@ public class HandController : MonoBehaviour
                 Destroy(child.gameObject);
                 break;
             }
+        }
+
+        hasDrawnCard = false;
+    }
+
+    public void ReplaceCard(CardData cardInHand, CardData newCard)
+    {
+        foreach (Transform child in transform)
+        {
+            var controller = child.GetComponent<CardController>();
+            if (controller == null || controller.cardData != cardInHand) continue;
+
+            controller.cardData = newCard;
+            child.name = newCard.name;
+            child.GetComponent<CardView>().Setup(newCard, DeckController.Instance.cardBack);
+            return;
         }
     }
 

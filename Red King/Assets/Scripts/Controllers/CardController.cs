@@ -17,7 +17,16 @@ namespace Cards
 
         void OnMouseDown()
         {
-            if (!handController.isBot) handController.PlayCard(cardData);
+            if (!handController.isBot)
+            {
+                if (handController.hasDrawnCard) 
+                {
+                    Debug.Log("has drawn card branch");
+                    handController.ReplaceCard(cardData, DeckController.Instance.drawnCard);
+                } 
+                else handController.PlayCard(cardData);
+            
+            }
         }
     }
 }

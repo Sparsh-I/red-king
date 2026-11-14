@@ -9,22 +9,41 @@ namespace Cards
 {
     public class DeckController : MonoBehaviour
     {
+        public static DeckController Instance { get; private set; }
+
         [Header("Deck")]
         [SerializeField] private List<CardData> deck = new();
         [SerializeField] private int seed;
         [SerializeField] private bool useRandomSeed = true;
         [SerializeField] private bool isShuffled;
         public bool canDraw = true;
+        public CardData drawnCard = null;
+
 
         [Header("Hands")]
         [SerializeField] private GameObject cardPrefab;
-        [SerializeField] private Transform playerHand;
-        [SerializeField] private Transform botHand;
-        [SerializeField] private Sprite cardBack;
+        [SerializeField] private GameObject playerHand;
+        [SerializeField] private GameObject botHand;
+        public Sprite cardBack;
         [SerializeField] private int handSize = 4;
         [SerializeField] private float cardSpacing = 1.2f;
 
         private DisplayCardController dcController;
+
+        private void Awake()
+        {
+            if (Instance != null && Instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            Instance = this;
+        }
+
+        private void OnDestroy()
+        {
+          if (Instance == this) Instance = null;  
+        }
 
         private void Start()
         {
@@ -95,12 +114,12 @@ namespace Cards
 
         void OnMouseDown()
         {
-            if (canDraw) DrawCard(playerHand);
+            if (canDraw) DrawCard(playerHand.GetComponent<Transform>());
         }
 
         private void DrawCard(Transform handParent, bool isBot = false)
         {
-            var drawnCard = deck[^1];
+            drawnCard = deck[^1];
             deck.RemoveAt(deck.Count - 1);
 
             var hand = handParent.GetComponent<HandController>();
@@ -108,6 +127,7 @@ namespace Cards
 
             Debug.Log("Drew the " + drawnCard.rank + " of " + drawnCard.suit);
             dcController.DisplayCard(drawnCard);
+            playerHand.GetComponent<HandController>().hasDrawnCard = true;
             canDraw = false;
         }
     }
