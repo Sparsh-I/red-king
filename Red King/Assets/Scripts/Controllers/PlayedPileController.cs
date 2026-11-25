@@ -10,8 +10,9 @@ public class PlayedPileController : MonoBehaviour
 
     void OnMouseDown()
     {
-        if (!DeckController.Instance.drawnCard || !playerHand.hasDrawnCard) return;
-        playerHand.PlayCard(DeckController.Instance.drawnCard);
-        displayCard.sprite = null;
+        if (playerHand == null || !playerHand.currentlyPlaying) return;
+        if (!playerHand.hasDrawnCard) return;
+
+        playerHand.DiscardDrawn();
     }
 }

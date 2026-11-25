@@ -18,6 +18,7 @@ namespace Cards
         [SerializeField] private bool isShuffled;
         public bool canDraw = true;
         public CardData drawnCard = null;
+        public event Action DeckClicked;
 
 
         [Header("Hands")]
@@ -26,7 +27,7 @@ namespace Cards
         [SerializeField] private GameObject botHand;
         public Sprite cardBack;
         [SerializeField] private int handSize = 4;
-        [SerializeField] private float cardSpacing = 1.2f;
+        public float cardSpacing = 1.2f;
 
         private DisplayCardController dcController;
 
@@ -47,8 +48,15 @@ namespace Cards
 
         private void Start()
         {
-            if (isShuffled) ShuffleDeck();
             dcController = FindAnyObjectByType<DisplayCardController>();
+        }
+
+        public CardData DrawTop()
+        {
+            if (deck.Count == 0) { Debug.LogWarning("Deck is empty"); return null; }
+            var card = deck[^1];
+            deck.RemoveAt(deck.Count - 1);
+            return card;
         }
 
         public void ShuffleDeck()
@@ -112,23 +120,6 @@ namespace Cards
             }
         }
 
-        void OnMouseDown()
-        {
-            if (canDraw) DrawCard(playerHand.GetComponent<Transform>());
-        }
-
-        private void DrawCard(Transform handParent, bool isBot = false)
-        {
-            drawnCard = deck[^1];
-            deck.RemoveAt(deck.Count - 1);
-
-            var hand = handParent.GetComponent<HandController>();
-            hand.HighlightHand(true);
-
-            Debug.Log("Drew the " + drawnCard.rank + " of " + drawnCard.suit);
-            dcController.DisplayCard(drawnCard);
-            playerHand.GetComponent<HandController>().hasDrawnCard = true;
-            canDraw = false;
-        }
+        private void OnMouseDown() => DeckClicked?.Invoke();
     }
 }

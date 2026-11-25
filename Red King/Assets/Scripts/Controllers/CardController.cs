@@ -9,24 +9,20 @@ namespace Cards
         public CardData cardData;
         private HandController handController;
         
-        // Start is called before the first frame update
-        void Start()
+        private void Awake()
         {
             handController = GetComponentInParent<HandController>();
         }
 
-        void OnMouseDown()
+        private void OnMouseDown()
         {
-            if (!handController.isBot)
-            {
-                if (handController.hasDrawnCard) 
-                {
-                    Debug.Log("has drawn card branch");
-                    handController.ReplaceCard(cardData, DeckController.Instance.drawnCard);
-                } 
-                else handController.PlayCard(cardData);
-            
-            }
+            if (handController == null || handController.isBot) return;
+            if (!handController.currentlyPlaying) return;
+
+            if (handController.hasDrawnCard)
+                handController.SwapDrawnWith(cardData);
+            else
+                Debug.Log("Draw a card first");
         }
     }
 }

@@ -1,4 +1,7 @@
+using System;
+using System.Collections;
 using Cards;
+using NUnit.Framework;
 using NUnit.Framework.Constraints;
 using UnityEngine;
 using UnityEngine.XR;
@@ -20,39 +23,81 @@ public class HandController : MonoBehaviour
     [SerializeField] private bool canViewOpp = false;
     [SerializeField] private bool canSwap = false;
 
+    public CardData drawnCard { get; private set; }
+    public event Action<HandController> TurnFinished;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Awake()
     {
-        var hand = GetComponent<Transform>();
         dcController = FindAnyObjectByType<DisplayCardController>();
-        DeckController.Instance.DealToHand(hand, maxHandCapacity);
         pcSpawner = FindAnyObjectByType<PlayedCardSpawner>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void DealStartingHand() => DeckController.Instance.DealToHand(transform, maxHandCapacity);
+
+    public void BeginTurn()
     {
-        if (currentlyPlaying)
-        {
-            
-        }
+        currentlyPlaying = true;
+        hasDrawnCard = false;
+        drawnCard = null;
+        HighlightHand(true);
+
+        if (isBot) StartCoroutine(BotTurn());
     }
 
-    public void PlayCard(CardData card)
+    public void EndTurn()
     {
-        pcSpawner.SpawnCard(card);
+        currentlyPlaying = false;
+        HighlightHand(false);
+        dcController.HideCard();
+    }
 
-        foreach (Transform child in transform)
-        {
-            var controller = child.GetComponent<CardController>();
-            if (controller != null && controller.cardData == card) {
-                Destroy(child.gameObject);
-                break;
-            }
-        }
+    public void DrawCard()
+    {
+        if (!currentlyPlaying || hasDrawnCard) return;
 
+        drawnCard = DeckController.Instance.DrawTop();
+        if (drawnCard == null) return;
+
+        hasDrawnCard = true;
+        if (!isBot) dcController.DisplayCard(drawnCard);
+    }
+
+    public void SwapDrawnWith(CardData cardInHand)
+    {
+        if (!currentlyPlaying || !hasDrawnCard) return;
+
+        pcSpawner.SpawnCard(cardInHand);
+        ReplaceCard(cardInHand, drawnCard);
+        FinishTurn();
+    }
+
+    public void DiscardDrawn()
+    {
+        if (!currentlyPlaying || !hasDrawnCard) return;
+
+        pcSpawner.SpawnCard(drawnCard);
+        FinishTurn();
+    }
+
+    private void FinishTurn()
+    {
         hasDrawnCard = false;
+        drawnCard = null;
+        TurnFinished?.Invoke(this);
+    }
+
+    private IEnumerator BotTurn()
+    {
+        yield return new WaitForSeconds(1f);
+        DrawCard();
+        if (!hasDrawnCard) { FinishTurn(); yield break; }
+
+        yield return new WaitForSeconds(1f);
+        var cards = GetComponentsInChildren<CardController>();
+        if (cards.Length > 0 && UnityEngine.Random.value > 0.5f)
+            SwapDrawnWith(cards[UnityEngine.Random.Range(0, cards.Length)].cardData);
+        else
+            DiscardDrawn();
     }
 
     public void ReplaceCard(CardData cardInHand, CardData newCard)
