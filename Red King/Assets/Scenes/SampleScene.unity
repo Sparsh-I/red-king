@@ -211,6 +211,54 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &391167428
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 391167430}
+  - component: {fileID: 391167429}
+  m_Layer: 0
+  m_Name: Game Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &391167429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 391167428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09527b513896f4f768b6296b60773b93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  deck: {fileID: 1569298351}
+  playerHand: {fileID: 1234543274}
+  botHand: {fileID: 937599935}
+  turnDelay: 1
+--- !u!4 &391167430
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 391167428}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -732,6 +780,36 @@ MonoBehaviour:
   maxScale: 2.7
   growthRate: 100
   isDisplaying: 0
+--- !u!1 &937599934 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1377154060967970808, guid: 785b427db03c446bf93db1a025dd5b39, type: 3}
+  m_PrefabInstance: {fileID: 6283208710995675731}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &937599935 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8507002146245995551, guid: 785b427db03c446bf93db1a025dd5b39, type: 3}
+  m_PrefabInstance: {fileID: 6283208710995675731}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 937599934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c7568ba1c8ed48a98776d13d6ce375d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HandController
+--- !u!114 &937599937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 937599934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fc8021f23d794ba38e78d7f85832a51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  memoryStrength: 0
+  memoryList: []
 --- !u!114 &1234543274 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2894946940413410129, guid: 5fbd55d2a9d254fba92f4a0f05e06cd6, type: 3}
@@ -743,6 +821,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c7568ba1c8ed48a98776d13d6ce375d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HandController
+--- !u!114 &1569298351 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6855002371620024173, guid: 595a9b1a3803a402284fdb686d60a6bd, type: 3}
+  m_PrefabInstance: {fileID: 8817927584161099403}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07099dd8d4094ee68f69b21d0586fb5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Cards.DeckController
 --- !u!1001 &5076993291734300955
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -855,7 +944,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1377154060967970808, guid: 785b427db03c446bf93db1a025dd5b39, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 937599937}
   m_SourcePrefab: {fileID: 100100000, guid: 785b427db03c446bf93db1a025dd5b39, type: 3}
 --- !u!1001 &8817927584161099403
 PrefabInstance:
@@ -926,3 +1018,4 @@ SceneRoots:
   - {fileID: 539584637}
   - {fileID: 5076993291734300955}
   - {fileID: 856854699}
+  - {fileID: 391167430}
